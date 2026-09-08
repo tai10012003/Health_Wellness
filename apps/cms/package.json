@@ -1,0 +1,33 @@
+{
+  "name": "@health-wellness/cms",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Strapi CMS for Health Wellness content.",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi"
+  },
+  "dependencies": {
+    "@strapi/plugin-cloud": "5",
+    "@strapi/plugin-users-permissions": "5",
+    "@strapi/strapi": "5",
+    "health-wellness-platform": "file:../..",
+    "pg": "^8.13.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "styled-components": "^6.1.13"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=20.0.0 <=22.x.x",
+    "npm": ">=10.0.0"
+  },
+  "strapi": {
+    "uuid": "b51781ea-bc4a-43c3-8b3f-c5a95d46d1f1"
+  }
+}

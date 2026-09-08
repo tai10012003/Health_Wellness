@@ -1,0 +1,13 @@
+{
+  "name": "health-wellness-platform",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm --prefix apps/web run dev",
+    "build": "npm --prefix apps/web run build",
+    "preview": "npm --prefix apps/web run preview",
+    "cms:dev": "npm --prefix apps/cms run develop",
+    "cms:build": "npm --prefix apps/cms run build",
+    "cms:start": "npm --prefix apps/cms run start"
+  }
+}
