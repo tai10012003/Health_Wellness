@@ -34,7 +34,7 @@ Start the local database before running Strapi:
 docker compose -f infra/docker-compose.yml up -d
 ```
 
-Create `apps/cms/.env` from `apps/cms/.env.example`, then replace the secret values.
+Create `apps/cms/.env.development` from `apps/cms/.env.example`, then replace the secret values.
 
 ## Articles Flow
 

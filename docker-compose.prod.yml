@@ -1,0 +1,61 @@
+services:
+  web:
+    image: ${DOCKERHUB_USERNAME}/health-wellness-web:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      NUXT_PUBLIC_SITE_URL: ${NUXT_PUBLIC_SITE_URL}
+      NUXT_PUBLIC_STRAPI_URL: ${NUXT_PUBLIC_STRAPI_URL}
+      NUXT_STRAPI_API_TOKEN: ${NUXT_STRAPI_API_TOKEN:-}
+    depends_on:
+      - cms
+    networks:
+      - wellnest
+
+  cms:
+    image: ${DOCKERHUB_USERNAME}/health-wellness-cms:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 1337
+      PUBLIC_URL: ${PUBLIC_URL}
+      STRAPI_PROXY: ${STRAPI_PROXY:-true}
+      APP_KEYS: ${APP_KEYS}
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
+      JWT_SECRET: ${JWT_SECRET}
+      DATABASE_CLIENT: postgres
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_SSL_REJECT_UNAUTHORIZED: ${DATABASE_SSL_REJECT_UNAUTHORIZED:-false}
+      STRAPI_SEED: ${STRAPI_SEED:-false}
+    volumes:
+      - cms_uploads:/repo/apps/cms/public/uploads
+    networks:
+      - wellnest
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on:
+      - web
+      - cms
+    ports:
+      - "80:80"
+    environment:
+      NGINX_FRONTEND_HOST: ${NGINX_FRONTEND_HOST}
+      NGINX_CMS_HOST: ${NGINX_CMS_HOST}
+    volumes:
+      - ./deploy/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+    networks:
+      - wellnest
+
+volumes:
+  cms_uploads:
+
+networks:
+  wellnest:
+    driver: bridge

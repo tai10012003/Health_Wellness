@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Strapi CMS for Health Wellness content.",
   "scripts": {
-    "develop": "strapi develop",
+    "develop": "node ./scripts/strapi-env.mjs develop",
     "start": "strapi start",
     "build": "strapi build",
     "strapi": "strapi"

@@ -40,6 +40,12 @@ Then run Strapi:
 npm run develop
 ```
 
+Development environment variables are loaded from:
+
+```txt
+apps/cms/.env.development
+```
+
 Admin panel:
 
 ```txt

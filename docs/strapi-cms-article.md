@@ -1,22 +1,21 @@
 # Strapi CMS Và Luồng Article
 
-Tài liệu này giải thích phần `apps/cms` trong project Health & Wellness: Strapi hoạt động như thế nào, các file chính có vai trò gì, và luồng nhập bài viết trong Content Manager được lưu xuống PostgreSQL/Neon ra sao.
+Tài liệu này giải thích phần `apps/cms` trong project Health & Wellness: Strapi hoạt động như th�?nào, các file chính có vai trò gì, và luồng nhập bài viết trong Content Manager được lưu xuống PostgreSQL/Neon ra sao.
 
 ## 1. Bức Tranh Tổng Quan
 
 Trong project này, `apps/cms` là backend CMS dùng Strapi. Strapi cung cấp sẵn:
 
 - Admin dashboard tại `http://localhost:1337/admin`.
-- Content Manager để nhập bài viết.
-- REST API để Nuxt frontend đọc bài viết.
+- Content Manager đ�?nhập bài viết.
+- REST API đ�?Nuxt frontend đọc bài viết.
 - Quản lý role, permission, media upload, i18n, draft/publish.
 - Kết nối PostgreSQL, hiện đang dùng Neon qua `DATABASE_URL`.
 
 Luồng chính:
 
 ```txt
-Người quản trị
-  -> Strapi Admin UI
+Người quản tr�?  -> Strapi Admin UI
   -> Content Manager
   -> Article content type
   -> Strapi core controller/service
@@ -28,7 +27,7 @@ Nuxt frontend
   -> PostgreSQL/Neon
 ```
 
-Điểm quan trọng: phần nhập form, validate, save, publish trong Content Manager là do **Strapi core** xử lý. Source code của mình chủ yếu định nghĩa cấu trúc dữ liệu Article và cấu hình hệ thống.
+Điểm quan trọng: phần nhập form, validate, save, publish trong Content Manager là do **Strapi core** x�?lý. Source code của mình ch�?yếu định nghĩa cấu trúc d�?liệu Article và cấu hình h�?thống.
 
 ## 2. Cấu Trúc Thư Mục CMS
 
@@ -37,36 +36,36 @@ Các file quan trọng hiện tại:
 ```txt
 apps/cms
 ├── config
-│   ├── admin.ts
-│   ├── api.ts
-│   ├── database.ts
-│   ├── middlewares.ts
-│   ├── plugins.ts
-│   └── server.ts
+�?  ├── admin.ts
+�?  ├── api.ts
+�?  ├── database.ts
+�?  ├── middlewares.ts
+�?  ├── plugins.ts
+�?  └── server.ts
 ├── public
-│   └── uploads
+�?  └── uploads
 ├── src
-│   ├── index.ts
-│   └── api
-│       └── article
-│           ├── content-types
-│           │   └── article
-│           │       └── schema.json
-│           ├── controllers
-│           │   └── article.ts
-│           ├── routes
-│           │   └── article.ts
-│           └── services
-│               └── article.ts
+�?  ├── index.ts
+�?  └── api
+�?      └── article
+�?          ├── content-types
+�?          �?  └── article
+�?          �?      └── schema.json
+�?          ├── controllers
+�?          �?  └── article.ts
+�?          ├── routes
+�?          �?  └── article.ts
+�?          └── services
+�?              └── article.ts
 ├── package.json
 ├── tsconfig.json
-└── .env
+└── .env.development
 ```
 
 Các thư mục không nên sửa trực tiếp:
 
 - `node_modules`: thư viện đã cài.
-- `dist`: code build từ TypeScript sang JavaScript.
+- `dist`: code build t�?TypeScript sang JavaScript.
 - `.cache`, `.tmp`: cache/build tạm của Strapi.
 
 ## 3. `package.json`
@@ -79,7 +78,7 @@ Scripts chính:
 
 ```json
 {
-  "develop": "strapi develop",
+  "develop": "node ./scripts/strapi-env.mjs develop",
   "start": "strapi start",
   "build": "strapi build",
   "strapi": "strapi"
@@ -88,7 +87,7 @@ Scripts chính:
 
 Ý nghĩa:
 
-- `npm run develop`: chạy Strapi ở chế độ development, có admin panel và reload khi code đổi.
+- `npm run develop`: chạy Strapi �?ch�?đ�?development, có admin panel và reload khi code đổi.
 - `npm run build`: build admin panel và server code.
 - `npm run start`: chạy production sau khi build.
 - `npm run strapi`: gọi trực tiếp Strapi CLI.
@@ -102,11 +101,11 @@ Dependency đáng chú ý:
 - `react`, `react-dom`, `styled-components`: Strapi Admin UI dùng React bên trong.
 - `typescript`: project CMS đang viết config bằng TypeScript.
 
-## 4. `.env`
+## 4. `.env.development`
 
-File: `apps/cms/.env`
+File: `apps/cms/.env.development`
 
-Đây là file cấu hình runtime. Strapi đọc file này khi chạy.
+Đây là file cấu hình runtime cho môi trường dev. Script `npm run develop` nạp file này trước rồi mới chạy Strapi.
 
 Các nhóm biến chính:
 
@@ -115,7 +114,7 @@ HOST=0.0.0.0
 PORT=1337
 ```
 
-Nghĩa là Strapi chạy ở port `1337`.
+Nghĩa là Strapi chạy �?port `1337`.
 
 ```env
 APP_KEYS=...
@@ -125,7 +124,7 @@ TRANSFER_TOKEN_SALT=...
 JWT_SECRET=...
 ```
 
-Đây là các secret để Strapi ký session, JWT, API token và transfer token. Dev có thể dùng giá trị local, production nên tạo secret mạnh.
+Đây là các secret đ�?Strapi ký session, JWT, API token và transfer token. Dev có th�?dùng giá tr�?local, production nên tạo secret mạnh.
 
 ```env
 DATABASE_CLIENT=postgres
@@ -133,13 +132,13 @@ DATABASE_URL=postgresql://...
 DATABASE_SSL_REJECT_UNAUTHORIZED=false
 ```
 
-Đây là phần kết nối Neon. `DATABASE_URL` là connection string Neon. Vì Neon yêu cầu SSL, `database.ts` sẽ bật SSL khi thấy `DATABASE_URL`.
+Đây là phần kết nối Neon. `DATABASE_URL` là connection string Neon. Vì Neon yêu cầu SSL, `database.ts` s�?bật SSL khi thấy `DATABASE_URL`.
 
 ```env
 STRAPI_SEED=false
 ```
 
-Biến này điều khiển seed data trong `src/index.ts`. Khi `false`, Strapi không tự tạo bài mẫu.
+Biến này điều khiển seed data trong `src/index.ts`. Khi `false`, Strapi không t�?tạo bài mẫu.
 
 ## 5. `config/database.ts`
 
@@ -200,16 +199,16 @@ Cách hiểu:
   - `connectionString`: URL Neon.
   - `ssl.rejectUnauthorized`: cấu hình SSL.
   - `schema: public`: schema PostgreSQL mặc định.
-- Nếu không có `DATABASE_URL`, Strapi quay về cấu hình local:
+- Nếu không có `DATABASE_URL`, Strapi quay v�?cấu hình local:
   - `DATABASE_HOST`
   - `DATABASE_PORT`
   - `DATABASE_NAME`
   - `DATABASE_USERNAME`
   - `DATABASE_PASSWORD`
-- `pool.min`, `pool.max`: số lượng connection database tối thiểu/tối đa.
-- `acquireConnectionTimeout`: thời gian chờ lấy connection trước khi báo lỗi.
+- `pool.min`, `pool.max`: s�?lượng connection database tối thiểu/tối đa.
+- `acquireConnectionTimeout`: thời gian ch�?lấy connection trước khi báo lỗi.
 
-Với project hiện tại, vì `.env` có `DATABASE_URL`, Strapi sẽ dùng Neon.
+Với project hiện tại, vì `.env.development` có `DATABASE_URL`, Strapi s�?dùng Neon.
 
 ## 6. `config/server.ts`
 
@@ -227,7 +226,7 @@ export default ({ env }) => ({
 
 Ý nghĩa:
 
-- `host`: địa chỉ Strapi bind server.
+- `host`: địa ch�?Strapi bind server.
 - `port`: cổng chạy Strapi, hiện là `1337`.
 - `app.keys`: key dùng cho session/cookie signing.
 
@@ -237,7 +236,7 @@ Khi bạn chạy:
 npm run cms:dev
 ```
 
-Strapi đọc file này để biết chạy ở đâu.
+Strapi đọc file này đ�?biết chạy �?đâu.
 
 ## 7. `config/admin.ts`
 
@@ -262,10 +261,10 @@ export default ({ env }) => ({
 Ý nghĩa:
 
 - `auth.secret`: secret cho đăng nhập Strapi Admin.
-- `apiToken.salt`: salt để tạo API token.
+- `apiToken.salt`: salt đ�?tạo API token.
 - `transfer.token.salt`: salt cho transfer token, dùng khi migrate/transfer data giữa môi trường.
 
-File này không định nghĩa user/role cụ thể. User và role được Strapi lưu trong database, ví dụ các bảng:
+File này không định nghĩa user/role c�?th�? User và role được Strapi lưu trong database, ví d�?các bảng:
 
 - `admin_users`
 - `admin_roles`
@@ -287,17 +286,17 @@ export default {
 
 Ý nghĩa:
 
-- `defaultLimit: 25`: nếu API list không truyền pagination, Strapi trả tối đa 25 item.
+- `defaultLimit: 25`: nếu API list không truyền pagination, Strapi tr�?tối đa 25 item.
 - `maxLimit: 100`: client không được lấy quá 100 item trong một lần.
-- `withCount: true`: response pagination có tổng số item.
+- `withCount: true`: response pagination có tổng s�?item.
 
-Ví dụ Nuxt đang gọi:
+Ví d�?Nuxt đang gọi:
 
 ```txt
 GET /api/articles?pagination[pageSize]=12
 ```
 
-Nên Strapi trả tối đa 12 bài trong request đó.
+Nên Strapi tr�?tối đa 12 bài trong request đó.
 
 ## 9. `config/middlewares.ts`
 
@@ -318,7 +317,7 @@ export default [
 ]
 ```
 
-Middleware là các lớp xử lý request trước/sau controller.
+Middleware là các lớp x�?lý request trước/sau controller.
 
 Ý nghĩa từng dòng:
 
@@ -328,12 +327,12 @@ Middleware là các lớp xử lý request trước/sau controller.
 - `strapi::cors`: cho phép cross-origin request, cần khi Nuxt gọi Strapi.
 - `strapi::poweredBy`: thêm header nhận diện Strapi.
 - `strapi::query`: parse query string như `populate=cover`, `filters[...]`.
-- `strapi::body`: parse body khi tạo/sửa dữ liệu.
-- `strapi::session`: xử lý session admin.
-- `strapi::favicon`: phục vụ favicon.
-- `strapi::public`: phục vụ file public, bao gồm ảnh trong `public/uploads`.
+- `strapi::body`: parse body khi tạo/sửa d�?liệu.
+- `strapi::session`: x�?lý session admin.
+- `strapi::favicon`: phục v�?favicon.
+- `strapi::public`: phục v�?file public, bao gồm ảnh trong `public/uploads`.
 
-Nhờ `strapi::public`, ảnh upload có thể mở bằng URL:
+Nh�?`strapi::public`, ảnh upload có th�?m�?bằng URL:
 
 ```txt
 http://localhost:1337/uploads/ten-file.jpg
@@ -356,7 +355,7 @@ Strapi vẫn có plugin mặc định/đã cài như:
 - i18n.
 - Content Manager.
 
-Sau này nếu cấu hình upload lên Cloudinary/S3/R2, mình sẽ thêm config vào file này.
+Sau này nếu cấu hình upload lên Cloudinary/S3/R2, mình s�?thêm config vào file này.
 
 ## 11. `src/index.ts`
 
@@ -377,14 +376,14 @@ export default {
 `register()`:
 
 - Chạy trong giai đoạn Strapi đăng ký plugin/content type.
-- Hiện đang để trống.
-- Sau này có thể dùng để extend plugin hoặc custom field.
+- Hiện đang đ�?trống.
+- Sau này có th�?dùng đ�?extend plugin hoặc custom field.
 
 `bootstrap({ strapi })`:
 
 - Chạy sau khi Strapi đã load xong.
-- Có quyền dùng object `strapi` để gọi service, document service, database, plugin.
-- Trong project mình, hàm này dùng để seed bài viết mẫu nếu bật `STRAPI_SEED=true`.
+- Có quyền dùng object `strapi` đ�?gọi service, document service, database, plugin.
+- Trong project mình, hàm này dùng đ�?seed bài viết mẫu nếu bật `STRAPI_SEED=true`.
 
 Logic seed:
 
@@ -394,7 +393,7 @@ if (process.env.STRAPI_SEED !== 'true') {
 }
 ```
 
-Nếu `.env` không bật seed, thoát luôn.
+Nếu `.env.development` không bật seed, thoát luôn.
 
 ```ts
 const count = await strapi.documents('api::article.article').count()
@@ -404,7 +403,7 @@ if (count > 0) {
 }
 ```
 
-Nếu đã có bài viết, không seed nữa để tránh tạo trùng.
+Nếu đã có bài viết, không seed nữa đ�?tránh tạo trùng.
 
 ```ts
 await strapi.documents('api::article.article').create({
@@ -417,11 +416,11 @@ await strapi.documents('api::article.article').create({
 Dòng này tạo Article bằng Document Service của Strapi 5:
 
 - `api::article.article`: UID của content type Article.
-- `data`: dữ liệu bài viết.
+- `data`: d�?liệu bài viết.
 - `status: 'published'`: tạo và publish luôn.
-- `locale`: tạo đúng ngôn ngữ `vi` hoặc `en`.
+- `locale`: tạo đúng ngôn ng�?`vi` hoặc `en`.
 
-Hiện `.env` đang để:
+Hiện `.env.development` đang đ�?
 
 ```env
 STRAPI_SEED=false
@@ -433,7 +432,7 @@ nên seed không chạy.
 
 File: `apps/cms/src/api/article/content-types/article/schema.json`
 
-Đây là file quan trọng nhất cho content Article. Nó định nghĩa Strapi phải tạo content type gì, có field nào, field nào bắt buộc, có đa ngôn ngữ không, có draft/publish không.
+Đây là file quan trọng nhất cho content Article. Nó định nghĩa Strapi phải tạo content type gì, có field nào, field nào bắt buộc, có đa ngôn ng�?không, có draft/publish không.
 
 Phần đầu:
 
@@ -455,8 +454,8 @@ Phần đầu:
 - `kind: collectionType`: Article là dạng nhiều bản ghi, giống bảng `articles`.
 - `collectionName: articles`: tên collection/table chính trong database.
 - `singularName: article`: tên đơn.
-- `pluralName: articles`: tên số nhiều.
-- `displayName: Article`: tên hiển thị trong Strapi Admin.
+- `pluralName: articles`: tên s�?nhiều.
+- `displayName: Article`: tên hiển th�?trong Strapi Admin.
 
 Draft & Publish:
 
@@ -469,7 +468,7 @@ Draft & Publish:
 Khi bật phần này:
 
 - Bài có trạng thái Draft.
-- Bài chỉ public ra API khi Publish, tùy query/permission.
+- Bài ch�?public ra API khi Publish, tùy query/permission.
 - Database có field liên quan như `published_at`.
 
 i18n:
@@ -482,7 +481,7 @@ i18n:
 }
 ```
 
-Nghĩa là Article hỗ trợ đa ngôn ngữ. Một bài có thể có bản `vi`, bản `en`.
+Nghĩa là Article h�?tr�?đa ngôn ng�? Một bài có th�?có bản `vi`, bản `en`.
 
 Các field:
 
@@ -500,11 +499,11 @@ Các field:
 }
 ```
 
-Tiêu đề bài viết.
+Tiêu đ�?bài viết.
 
-- Kiểu dữ liệu: chuỗi ngắn.
+- Kiểu d�?liệu: chuỗi ngắn.
 - Bắt buộc nhập.
-- Localized: mỗi ngôn ngữ có title riêng.
+- Localized: mỗi ngôn ng�?có title riêng.
 
 ### `slug`
 
@@ -518,13 +517,13 @@ Tiêu đề bài viết.
 
 Slug dùng cho URL frontend.
 
-Ví dụ:
+Ví d�?
 
 ```txt
 /vi/bai-viet/hoc-boxing-cam-nang-nhap-mon
 ```
 
-`targetField: title` nghĩa là Strapi có thể tự gợi ý slug từ title.
+`targetField: title` nghĩa là Strapi có th�?t�?gợi ý slug t�?title.
 
 ### `excerpt`
 
@@ -540,12 +539,12 @@ Ví dụ:
 }
 ```
 
-Mô tả ngắn của bài viết.
+Mô t�?ngắn của bài viết.
 
-Frontend dùng field này ở:
+Frontend dùng field này �?
 
 - Card bài viết.
-- Mô tả đầu trang chi tiết.
+- Mô t�?đầu trang chi tiết.
 - SEO description fallback.
 
 ### `content`
@@ -587,14 +586,14 @@ Strapi rich text hiện lưu dạng Markdown/string. Nuxt đang parse đơn gi�
 
 Chuyên mục bài viết.
 
-Ví dụ:
+Ví d�?
 
 - `Tập luyện`
 - `Phục hồi`
 - `Dinh dưỡng`
 - `boxing`
 
-Nuxt dùng field này để hiển thị meta và filter.
+Nuxt dùng field này đ�?hiển th�?meta và filter.
 
 ### `cover`
 
@@ -610,13 +609,13 @@ Nuxt dùng field này để hiển thị meta và filter.
 Ảnh đại diện bài viết.
 
 - `media`: dùng Upload plugin của Strapi.
-- `multiple: false`: mỗi bài chỉ có một ảnh cover.
-- `allowedTypes: images`: chỉ cho ảnh.
+- `multiple: false`: mỗi bài ch�?có một ảnh cover.
+- `allowedTypes: images`: ch�?cho ảnh.
 
-Lưu ý lưu trữ:
+Lưu ý lưu tr�?
 
-- Metadata ảnh lưu trong PostgreSQL/Neon, ví dụ bảng `files`.
-- File ảnh vật lý trong dev nằm ở `apps/cms/public/uploads`.
+- Metadata ảnh lưu trong PostgreSQL/Neon, ví d�?bảng `files`.
+- File ảnh vật lý trong dev nằm �?`apps/cms/public/uploads`.
 - Sau này deploy production nên dùng Cloudinary/S3/R2.
 
 ### `readingTime`
@@ -631,9 +630,9 @@ Lưu ý lưu trữ:
 
 Thời gian đọc ước tính.
 
-- Kiểu số nguyên.
+- Kiểu s�?nguyên.
 - Mặc định `4`.
-- Nhỏ nhất `1`.
+- Nh�?nhất `1`.
 
 ### `seoTitle`
 
@@ -648,9 +647,9 @@ Thời gian đọc ước tính.
 }
 ```
 
-Tiêu đề SEO riêng nếu sau này muốn dùng khác với title bài viết.
+Tiêu đ�?SEO riêng nếu sau này muốn dùng khác với title bài viết.
 
-Hiện frontend đang dùng `title` làm SEO title, nhưng field này đã chuẩn bị sẵn để mở rộng.
+Hiện frontend đang dùng `title` làm SEO title, nhưng field này đã chuẩn b�?sẵn đ�?m�?rộng.
 
 ### `seoDescription`
 
@@ -665,9 +664,9 @@ Hiện frontend đang dùng `title` làm SEO title, nhưng field này đã chu�
 }
 ```
 
-Mô tả SEO riêng.
+Mô t�?SEO riêng.
 
-Hiện frontend đang dùng `excerpt` làm description, nhưng sau này có thể đổi sang `seoDescription`.
+Hiện frontend đang dùng `excerpt` làm description, nhưng sau này có th�?đổi sang `seoDescription`.
 
 ## 13. Controller Article
 
@@ -681,7 +680,7 @@ export default factories.createCoreController('api::article.article')
 
 Controller là lớp nhận HTTP request cho Article.
 
-Vì đang dùng `createCoreController`, Strapi tự tạo các action mặc định:
+Vì đang dùng `createCoreController`, Strapi t�?tạo các action mặc định:
 
 - `find`: lấy danh sách Article.
 - `findOne`: lấy một Article.
@@ -691,19 +690,19 @@ Vì đang dùng `createCoreController`, Strapi tự tạo các action mặc đ�
 
 Trong project này, mình chưa custom controller. Nghĩa là mọi CRUD Article dùng logic chuẩn của Strapi.
 
-Ví dụ request từ frontend:
+Ví d�?request t�?frontend:
 
 ```txt
 GET /api/articles?locale=vi&populate=cover
 ```
 
-Request này đi vào controller mặc định, sau đó controller gọi service/document service để lấy dữ liệu.
+Request này đi vào controller mặc định, sau đó controller gọi service/document service đ�?lấy d�?liệu.
 
 Khi nào cần custom controller?
 
 - Muốn endpoint riêng như `/api/articles/featured`.
-- Muốn tự lọc dữ liệu trước khi trả về frontend.
-- Muốn ẩn một số field nhạy cảm.
+- Muốn t�?lọc d�?liệu trước khi tr�?v�?frontend.
+- Muốn ẩn một s�?field nhạy cảm.
 - Muốn response shape gọn hơn cho Nuxt.
 
 ## 14. Service Article
@@ -716,9 +715,9 @@ import { factories } from '@strapi/strapi'
 export default factories.createCoreService('api::article.article')
 ```
 
-Service là lớp xử lý business logic.
+Service là lớp x�?lý business logic.
 
-Hiện đang dùng service mặc định, nên Strapi tự xử lý:
+Hiện đang dùng service mặc định, nên Strapi t�?x�?lý:
 
 - Query database.
 - Tạo bản ghi.
@@ -728,14 +727,14 @@ Hiện đang dùng service mặc định, nên Strapi tự xử lý:
 - Làm việc với locale.
 - Làm việc với relation/media.
 
-Khi bạn bấm Save trong Content Manager, Strapi không chạy logic riêng của mình ở đây vì mình chưa override. Nó dùng core service/document service của Strapi.
+Khi bạn bấm Save trong Content Manager, Strapi không chạy logic riêng của mình �?đây vì mình chưa override. Nó dùng core service/document service của Strapi.
 
 Khi nào cần custom service?
 
-- Tự tính `readingTime` từ `content`.
-- Tự tạo slug nâng cao.
-- Tự gắn category chuẩn hóa.
-- Đồng bộ bài viết sang search index.
+- T�?tính `readingTime` t�?`content`.
+- T�?tạo slug nâng cao.
+- T�?gắn category chuẩn hóa.
+- Đồng b�?bài viết sang search index.
 - Gửi webhook khi publish bài.
 
 ## 15. Route Article
@@ -768,7 +767,7 @@ Nuxt hiện dùng:
 GET /api/articles
 ```
 
-cho cả danh sách và chi tiết. Với chi tiết, Nuxt truyền filter:
+cho c�?danh sách và chi tiết. Với chi tiết, Nuxt truyền filter:
 
 ```txt
 filters[slug][$eq]=some-slug
@@ -796,15 +795,15 @@ và nhập:
 
 Sau đó bấm Save.
 
-Luồng xử lý:
+Luồng x�?lý:
 
 ```txt
 1. Admin UI gửi request tới backend Strapi.
 2. Strapi kiểm tra bạn có quyền tạo/sửa Article không.
-3. Strapi validate dữ liệu theo schema.json.
-4. Strapi xử lý field media, locale, draft/publish.
-5. Strapi ghi dữ liệu xuống PostgreSQL/Neon.
-6. Strapi trả response lại Admin UI.
+3. Strapi validate d�?liệu theo schema.json.
+4. Strapi x�?lý field media, locale, draft/publish.
+5. Strapi ghi d�?liệu xuống PostgreSQL/Neon.
+6. Strapi tr�?response lại Admin UI.
 ```
 
 Khi bấm Publish:
@@ -813,21 +812,21 @@ Khi bấm Publish:
 1. Admin UI gửi request publish.
 2. Strapi cập nhật trạng thái published.
 3. Field published_at được set.
-4. Bài viết bắt đầu có thể được API public trả ra, tùy permission/token.
+4. Bài viết bắt đầu có th�?được API public tr�?ra, tùy permission/token.
 ```
 
 Các bảng liên quan trong Neon:
 
-- `articles`: dữ liệu chính của bài viết.
+- `articles`: d�?liệu chính của bài viết.
 - `files`: metadata file upload.
 - `files_related_morphs`: liên kết media với Article.
 - `i18n_locale`: danh sách locale.
 - `admin_users`: user admin.
 - `admin_roles`: role admin.
 - `admin_permissions`: quyền admin.
-- `strapi_*`: bảng nội bộ của Strapi.
+- `strapi_*`: bảng nội b�?của Strapi.
 
-## 17. Luồng Nuxt Đọc Bài Viết Từ Strapi
+## 17. Luồng Nuxt Đọc Bài Viết T�?Strapi
 
 Phần frontend không gọi database Neon trực tiếp.
 
@@ -856,12 +855,12 @@ apps/web/pages/bai-viet/[slug].vue
 Lý do dùng Nuxt server API làm trung gian:
 
 - Giấu API token Strapi nếu sau này cần.
-- Format dữ liệu Strapi thành kiểu frontend dễ dùng.
-- Dễ cache response.
-- Dễ fallback nếu Strapi chưa chạy.
-- Sau này đổi CMS sẽ ít ảnh hưởng page Vue.
+- Format d�?liệu Strapi thành kiểu frontend d�?dùng.
+- D�?cache response.
+- D�?fallback nếu Strapi chưa chạy.
+- Sau này đổi CMS s�?ít ảnh hưởng page Vue.
 
-## 18. Media Upload Hoạt Động Như Thế Nào
+## 18. Media Upload Hoạt Động Như Th�?Nào
 
 Khi upload ảnh cover trong Strapi:
 
@@ -879,12 +878,12 @@ Trong dev local:
 apps/cms/public/uploads
 ```
 
-là nơi giữ file ảnh thật.
+là nơi gi�?file ảnh thật.
 
 Trong Neon:
 
 - Không lưu file ảnh thật.
-- Chỉ lưu metadata như tên file, url, mime type, size, provider.
+- Ch�?lưu metadata như tên file, url, mime type, size, provider.
 
 Frontend lấy ảnh bằng URL Strapi:
 
@@ -892,11 +891,11 @@ Frontend lấy ảnh bằng URL Strapi:
 http://localhost:1337/uploads/ten-file.jpg
 ```
 
-Trong Nuxt server, hàm `absoluteStrapiUrl()` biến đường dẫn `/uploads/...` thành URL đầy đủ.
+Trong Nuxt server, hàm `absoluteStrapiUrl()` biến đường dẫn `/uploads/...` thành URL đầy đ�?
 
-## 19. i18n VN/EN Hoạt Động Như Thế Nào
+## 19. i18n VN/EN Hoạt Động Như Th�?Nào
 
-Article bật localized ở schema:
+Article bật localized �?schema:
 
 ```json
 "pluginOptions": {
@@ -921,7 +920,7 @@ Khi Nuxt gọi:
 GET /api/articles?locale=vi
 ```
 
-Strapi trả bản tiếng Việt.
+Strapi tr�?bản tiếng Việt.
 
 Khi Nuxt gọi:
 
@@ -929,11 +928,11 @@ Khi Nuxt gọi:
 GET /api/articles?locale=en
 ```
 
-Strapi trả bản tiếng Anh.
+Strapi tr�?bản tiếng Anh.
 
-Field `cover` và `readingTime` hiện không bật localized riêng trong schema, nên thường được xem như dữ liệu chung/không bắt buộc dịch riêng tùy cách Strapi quản lý entry.
+Field `cover` và `readingTime` hiện không bật localized riêng trong schema, nên thường được xem như d�?liệu chung/không bắt buộc dịch riêng tùy cách Strapi quản lý entry.
 
-## 20. Permission Hoạt Động Như Thế Nào
+## 20. Permission Hoạt Động Như Th�?Nào
 
 Có hai nhóm phân quyền cần phân biệt.
 
@@ -943,11 +942,11 @@ Admin Panel Roles:
 Settings -> Administration Panel -> Roles
 ```
 
-Dùng cho người vào dashboard Strapi, ví dụ:
+Dùng cho người vào dashboard Strapi, ví d�?
 
 - Super Admin.
-- Marketing chỉ sửa Article.
-- HR sau này chỉ sửa Recruitment/Job.
+- Marketing ch�?sửa Article.
+- HR sau này ch�?sửa Recruitment/Job.
 
 API Public Roles:
 
@@ -974,27 +973,27 @@ Authorization: Bearer <token>
 
 Hiện Article đang dùng CRUD mặc định của Strapi. Đây là cách đúng cho giai đoạn đầu.
 
-Sau này có thể code thêm khi cần:
+Sau này có th�?code thêm khi cần:
 
-- Tự động tính `readingTime` từ `content`.
+- T�?động tính `readingTime` t�?`content`.
 - Tạo endpoint bài nổi bật.
 - Tạo endpoint bài liên quan.
-- Validate category theo danh sách cố định.
+- Validate category theo danh sách c�?định.
 - Tạo collection type `Category` riêng.
 - Tạo webhook báo Nuxt revalidate/cache refresh khi publish.
 - Cấu hình upload provider cloud.
 - Thêm lifecycle hook khi tạo/sửa bài.
 
-Ví dụ logic nên thêm sớm:
+Ví d�?logic nên thêm sớm:
 
 ```txt
 Article content thay đổi
-  -> tự tính readingTime
-  -> tự normalize slug
+  -> t�?tính readingTime
+  -> t�?normalize slug
   -> lưu vào database
 ```
 
-Nhưng hiện tại chưa bắt buộc, vì Strapi core đã đủ tốt cho bài viết cơ bản.
+Nhưng hiện tại chưa bắt buộc, vì Strapi core đã đ�?tốt cho bài viết cơ bản.
 
 ## 22. Kết Luận
 
@@ -1003,8 +1002,8 @@ Phần `apps/cms` hiện là một Strapi backend gọn:
 - `schema.json` định nghĩa Article.
 - `controller.ts`, `service.ts`, `route.ts` dùng core factory của Strapi.
 - `database.ts` kết nối Neon hoặc local PostgreSQL.
-- `middlewares.ts` bật các lớp xử lý request, CORS, body, public uploads.
+- `middlewares.ts` bật các lớp x�?lý request, CORS, body, public uploads.
 - `src/index.ts` có seed data tùy chọn.
 - Strapi core lo phần form Admin UI, save, publish, permission, media, i18n.
 
-Với Article, mình chưa cần tự code CRUD vì Strapi đã làm tốt. Code custom chỉ nên thêm khi nghiệp vụ vượt khỏi CMS cơ bản.
+Với Article, mình chưa cần t�?code CRUD vì Strapi đã làm tốt. Code custom ch�?nên thêm khi nghiệp v�?vượt khỏi CMS cơ bản.

@@ -12,14 +12,20 @@ apps/cms/dist/
 apps/cms/build/
 apps/cms/.cache/
 apps/cms/.tmp/
+apps/cms/.strapi-updater.json
 
 # Environment variables and secrets
 .env
 .env.*
 !.env.example
+!deploy/.env.production.example
 apps/*/.env
 apps/*/.env.*
 !apps/*/.env.example
+
+# Real environment files
+.env.production
+apps/cms/.env.development
 
 # Local uploads
 apps/cms/public/uploads/*
