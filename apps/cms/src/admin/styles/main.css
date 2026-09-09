@@ -1,0 +1,143 @@
+:root {
+  --wellnest-color-brand-green: #115f50;
+  --wellnest-color-brand-green-dark: #0d493e;
+  --wellnest-color-brand-green-soft: #dfece8;
+  --wellnest-color-brand-cream: #f7f4ee;
+  --wellnest-color-brand-gold: #c99a3e;
+  --wellnest-color-text-strong: #17231f;
+  --wellnest-color-text-muted: #64736e;
+  --wellnest-color-border-soft: #d8dfda;
+  --wellnest-color-surface: #ffffff;
+
+  --wellnest-font-body: Inter, Arial, sans-serif;
+  --wellnest-font-heading: Inter, Arial, sans-serif;
+  --wellnest-font-mono: SFMono-Regular, Consolas, "Liberation Mono", monospace;
+
+  --wellnest-font-size-xs: 12px;
+  --wellnest-font-size-sm: 13px;
+  --wellnest-font-size-md: 14px;
+  --wellnest-font-size-lg: 16px;
+  --wellnest-font-size-xl: 20px;
+  --wellnest-font-size-heading: 32px;
+}
+
+/*
+  Strapi Admin custom CSS.
+  Keep this file focused on color, font family, and font size only.
+*/
+
+html,
+body,
+#strapi {
+  color: var(--wellnest-color-text-strong);
+  font-family: var(--wellnest-font-body);
+  font-size: var(--wellnest-font-size-md);
+}
+
+body {
+  background: var(--wellnest-color-brand-cream);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+[role="heading"] {
+  color: var(--wellnest-color-text-strong);
+  font-family: var(--wellnest-font-heading);
+}
+
+h1,
+[aria-level="1"] {
+  font-size: var(--wellnest-font-size-heading);
+}
+
+h2,
+[aria-level="2"] {
+  font-size: var(--wellnest-font-size-xl);
+}
+
+h3,
+[aria-level="3"] {
+  font-size: var(--wellnest-font-size-lg);
+}
+
+p,
+label,
+input,
+textarea,
+select,
+button {
+  font-family: var(--wellnest-font-body);
+  font-size: var(--wellnest-font-size-md);
+}
+
+small,
+code,
+kbd,
+pre {
+  font-family: var(--wellnest-font-mono);
+}
+
+a {
+  color: var(--wellnest-color-brand-green);
+}
+
+a:hover {
+  color: var(--wellnest-color-brand-green-dark);
+}
+
+button {
+  color: var(--wellnest-color-text-strong);
+}
+
+button[type="submit"],
+button[aria-disabled="false"][data-variant="default"] {
+  background-color: var(--wellnest-color-brand-green);
+  color: var(--wellnest-color-surface);
+}
+
+button[type="submit"]:hover,
+button[aria-disabled="false"][data-variant="default"]:hover {
+  background-color: var(--wellnest-color-brand-green-dark);
+}
+
+.wellnest-preview-admin {
+  background: var(--wellnest-color-brand-cream);
+  color: var(--wellnest-color-text-strong);
+  font-family: var(--wellnest-font-body);
+  font-size: var(--wellnest-font-size-md);
+}
+
+.wellnest-preview-admin__heading {
+  color: var(--wellnest-color-text-strong);
+  font-family: var(--wellnest-font-heading);
+  font-size: var(--wellnest-font-size-heading);
+}
+
+.wellnest-preview-admin__muted {
+  color: var(--wellnest-color-text-muted);
+  font-size: var(--wellnest-font-size-sm);
+}
+
+.wellnest-preview-admin__button {
+  background: var(--wellnest-color-brand-green);
+  color: var(--wellnest-color-surface);
+  font-family: var(--wellnest-font-body);
+  font-size: var(--wellnest-font-size-md);
+}
+
+.wellnest-preview-admin__button:hover {
+  background: var(--wellnest-color-brand-green-dark);
+}
+
+.wellnest-preview-admin__accent {
+  color: var(--wellnest-color-brand-gold);
+}
+
+.wellnest-preview-admin__panel {
+  background: var(--wellnest-color-surface);
+  border-color: var(--wellnest-color-border-soft);
+}
