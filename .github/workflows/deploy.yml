@@ -64,6 +64,13 @@ jobs:
             set -e
             mkdir -p "${{ env.EC2_APP_DIR }}/deploy/nginx"
 
+      - name: Verify deploy files
+        run: |
+          set -e
+          test -f docker-compose.prod.yml
+          test -f deploy/.env.production.example
+          test -f deploy/nginx/default.conf.template
+
       - name: Copy deploy files to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -72,10 +79,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           target: ${{ env.EC2_APP_DIR }}
-          source: |
-            docker-compose.prod.yml
-            deploy/.env.production.example
-            deploy/nginx/default.conf.template
+          source: docker-compose.prod.yml,deploy/.env.production.example,deploy/nginx/default.conf.template
 
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.2.0
