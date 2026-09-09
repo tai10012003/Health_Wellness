@@ -73,7 +73,9 @@ GitHub Actions sẽ tự copy các file deploy này lên EC2 mỗi lần deploy:
 ```txt
 docker-compose.prod.yml
 deploy/.env.production.example
+deploy/issue-ssl.sh
 deploy/nginx/default.conf.template
+deploy/nginx/ssl.conf.template
 ```
 
 Bạn chỉ cần tự tạo file `.env.production` trên EC2 dựa theo:
@@ -125,6 +127,8 @@ Ví dụ:
 ```env
 DOCKERHUB_USERNAME=your-dockerhub-username
 IMAGE_TAG=latest
+NGINX_CONF_TEMPLATE=default.conf.template
+CERTBOT_EMAIL=your-email@example.com
 
 NUXT_PUBLIC_SITE_URL=http://healthwellness.13.250.10.20.nip.io
 NUXT_PUBLIC_STRAPI_URL=http://cms.healthwellness.13.250.10.20.nip.io
@@ -144,6 +148,15 @@ JWT_SECRET=replace-with-strong-secret
 DATABASE_URL=postgresql://user:password@host/neondb?sslmode=require&channel_binding=require
 DATABASE_SSL_REJECT_UNAUTHORIZED=false
 STRAPI_SEED=false
+```
+
+Sau khi xin SSL thành công, đổi các URL sang `https` và đổi template Nginx:
+
+```env
+NGINX_CONF_TEMPLATE=ssl.conf.template
+NUXT_PUBLIC_SITE_URL=https://healthwellness.13.250.10.20.nip.io
+NUXT_PUBLIC_STRAPI_URL=https://cms.healthwellness.13.250.10.20.nip.io
+PUBLIC_URL=https://cms.healthwellness.13.250.10.20.nip.io
 ```
 
 ## Chạy Lần Đầu Trên EC2
@@ -171,6 +184,55 @@ Mở:
 ```txt
 http://healthwellness.13.250.10.20.nip.io
 http://cms.healthwellness.13.250.10.20.nip.io/admin
+```
+
+## Bật HTTPS Bằng Let's Encrypt
+
+Chỉ làm phần này sau khi bản HTTP đã chạy được và Security Group đã mở port `80` + `443`.
+
+Trước khi xin cert, đảm bảo `.env.production` đang để:
+
+```env
+NGINX_CONF_TEMPLATE=default.conf.template
+NUXT_PUBLIC_SITE_URL=http://healthwellness.13.250.10.20.nip.io
+NUXT_PUBLIC_STRAPI_URL=http://cms.healthwellness.13.250.10.20.nip.io
+PUBLIC_URL=http://cms.healthwellness.13.250.10.20.nip.io
+CERTBOT_EMAIL=your-email@example.com
+```
+
+Xin certificate:
+
+```bash
+sh deploy/issue-ssl.sh
+```
+
+Sau khi cả 2 lệnh thành công, sửa `.env.production`:
+
+```env
+NGINX_CONF_TEMPLATE=ssl.conf.template
+NUXT_PUBLIC_SITE_URL=https://healthwellness.13.250.10.20.nip.io
+NUXT_PUBLIC_STRAPI_URL=https://cms.healthwellness.13.250.10.20.nip.io
+PUBLIC_URL=https://cms.healthwellness.13.250.10.20.nip.io
+```
+
+Restart stack:
+
+```bash
+docker compose --env-file .env.production -f docker-compose.prod.yml up -d
+docker compose --env-file .env.production -f docker-compose.prod.yml logs -f nginx
+```
+
+Kiểm tra:
+
+```bash
+curl -I https://healthwellness.13.250.10.20.nip.io
+curl -I https://cms.healthwellness.13.250.10.20.nip.io/admin
+```
+
+Container `certbot` trong Compose sẽ chạy `certbot renew` định kỳ để gia hạn certificate. Sau khi certificate được renew, restart hoặc reload Nginx để Nginx đọc certificate mới:
+
+```bash
+docker compose --env-file .env.production -f docker-compose.prod.yml exec nginx nginx -s reload
 ```
 
 ## Lưu Ý Upload Ảnh

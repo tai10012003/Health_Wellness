@@ -45,16 +45,32 @@ services:
       - cms
     ports:
       - "80:80"
+      - "443:443"
     environment:
       NGINX_FRONTEND_HOST: ${NGINX_FRONTEND_HOST}
       NGINX_CMS_HOST: ${NGINX_CMS_HOST}
     volumes:
-      - ./deploy/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./deploy/nginx/${NGINX_CONF_TEMPLATE:-default.conf.template}:/etc/nginx/templates/default.conf.template:ro
+      - certbot_www:/var/www/certbot:ro
+      - certbot_conf:/etc/letsencrypt:ro
+    networks:
+      - wellnest
+
+  certbot:
+    image: certbot/certbot:latest
+    restart: unless-stopped
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+    entrypoint: /bin/sh
+    command: -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $$!; done;'
     networks:
       - wellnest
 
 volumes:
   cms_uploads:
+  certbot_www:
+  certbot_conf:
 
 networks:
   wellnest:
