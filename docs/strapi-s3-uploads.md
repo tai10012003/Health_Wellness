@@ -60,6 +60,17 @@ AWS_ACL=
 
 Quyền đọc public sẽ được cấp bằng **Bucket Policy**, không dùng ACL.
 
+Trong code `apps/cms/config/plugins.ts`, config vẫn phải có key `ACL` nhưng giá trị là `undefined` khi `AWS_ACL` rỗng:
+
+```ts
+params: {
+  Bucket: s3Bucket,
+  ACL: acl || undefined
+}
+```
+
+Lý do: provider `@strapi/provider-upload-aws-s3` sẽ tự đặt mặc định `public-read` nếu key `ACL` không tồn tại trong `params`. Với bucket `ACLs disabled`, mặc định này sẽ gây lỗi `AccessControlListNotSupported`.
+
 ## Bucket Policy
 
 Vào:

@@ -19,7 +19,7 @@ export default ({ env }) => {
             region: env('AWS_REGION', 'ap-southeast-1'),
             params: {
               Bucket: s3Bucket,
-              ...(acl ? { ACL: acl } : {})
+              ACL: acl || undefined
             }
           }
         },
