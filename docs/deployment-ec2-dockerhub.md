@@ -150,6 +150,13 @@ DATABASE_SSL_REJECT_UNAUTHORIZED=false
 STRAPI_SEED=false
 ```
 
+Nếu dùng Amazon RDS PostgreSQL, nên để `DATABASE_URL` không có `sslmode=require` và để Strapi cấu hình SSL qua `DATABASE_SSL_REJECT_UNAUTHORIZED=false`:
+
+```env
+DATABASE_URL=postgresql://postgres:YOUR_RDS_PASSWORD@health-wellness.c1wi4qou8e9k.ap-southeast-1.rds.amazonaws.com:5432/healthwellness_db
+DATABASE_SSL_REJECT_UNAUTHORIZED=false
+```
+
 Sau khi xin SSL thành công, đổi các URL sang `https` và đổi template Nginx:
 
 ```env

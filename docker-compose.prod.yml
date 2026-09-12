@@ -31,6 +31,14 @@ services:
       DATABASE_CLIENT: postgres
       DATABASE_URL: ${DATABASE_URL}
       DATABASE_SSL_REJECT_UNAUTHORIZED: ${DATABASE_SSL_REJECT_UNAUTHORIZED:-false}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_ACCESS_SECRET: ${AWS_ACCESS_SECRET:-}
+      AWS_REGION: ${AWS_REGION:-ap-southeast-1}
+      AWS_BUCKET: ${AWS_BUCKET:-}
+      AWS_S3_ROOT_PATH: ${AWS_S3_ROOT_PATH:-uploads}
+      AWS_S3_BASE_URL: ${AWS_S3_BASE_URL:-}
+      AWS_ACL: ${AWS_ACL:-}
       STRAPI_SEED: ${STRAPI_SEED:-false}
     volumes:
       - cms_uploads:/repo/apps/cms/public/uploads
